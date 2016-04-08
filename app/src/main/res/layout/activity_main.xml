@@ -31,9 +31,8 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Barometervärde:"
         android:id="@+id/barometerTv"
-        android:layout_marginBottom="68dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_above="@+id/currentPressTv"
+        android:layout_alignStart="@+id/sendButton" />
 
     <EditText
         android:layout_width="fill_parent"
@@ -60,5 +59,23 @@
         android:text="Stegräknare(sedan appstart):"
         android:id="@+id/appstartStep"
         android:layout_below="@+id/stepTv"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Small Text"
+        android:id="@+id/currentPressTv"
+        android:layout_above="@+id/sendButton"
+        android:layout_toStartOf="@+id/sendButton" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="skicka till tryck"
+        android:id="@+id/sendButton"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true" />
 </RelativeLayout>

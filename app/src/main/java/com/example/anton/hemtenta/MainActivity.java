@@ -26,7 +26,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private TextView stepsDetTV;
     private TextView compassTV;
     private TextView barometerTV;
+    private TextView currentPressureTV;
     private Button pressureButton;
+    private Button sendButton;
     private EditText pressureInput;
     private float[] accelArr = new float[3];
     private float[] magnetArr = new float[3];
@@ -37,6 +39,7 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private float degrees = 0f;
     private float pressurelevel = 0f;
     private float s = 0f;
+    private float pressure_value;
 
 
     @Override
@@ -58,15 +61,22 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         compassTV = (TextView) findViewById(R.id.compassTv);
         barometerTV = (TextView) findViewById(R.id.barometerTv);
         pressureButton = (Button) findViewById(R.id.addPressureButton);
+        sendButton = (Button) findViewById(R.id.sendButton);
         pressureInput = (EditText) findViewById(R.id.pressureEt);
-
+        currentPressureTV = (TextView) findViewById(R.id.currentPressTv);
         pressureButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    String press = pressureInput.getText().toString();
-                if(!press.equals("")){
-                    pressurelevel = (float) Integer.parseInt(press);
+                String press = pressureInput.getText().toString();
+                if (!press.equals("")) {
+                    pressurelevel = Float.parseFloat(press);
                 }
+            }
+        });
+        sendButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pressureInput.setText("" + pressure_value);
             }
         });
 
@@ -129,11 +139,13 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             System.arraycopy(event.values, 0, accelArr, 0, event.values.length);
             accelerometerSet = true;
         } else if(sensor == barometerSensor){
-            float pressure_value = event.values[0];
+            float temp = 1.0f / 5.255f;
+            pressure_value = event.values[0];
+            currentPressureTV.setText("Tryck där du befinner dig just nu: " + pressure_value);
             if(pressurelevel == 0f){
                 barometerTV.setText("Höjd(över havet): Fyll i trycket vid havsytan");
             }else {
-                float height = SensorManager.getAltitude(pressurelevel, pressure_value);
+                float height = 44330.0f * (1.0f - (float)Math.pow(pressure_value/pressurelevel , temp));
                 barometerTV.setText("Höjd(över havet): " + Math.round(height) + "m");
             }
         }
